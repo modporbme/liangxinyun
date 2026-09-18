@@ -1,0 +1,55 @@
+name: 每日更新报告日期
+
+on:
+  schedule:
+    # 每天 UTC 00:05 运行（北京时间 08:05）
+    - cron: '5 0 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+permissions:
+  contents: write   # 需要写权限才能 push
+
+jobs:
+  update-date:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 仓库
+        uses: actions/checkout@v4
+        with:
+          # 使用默认 GITHUB_TOKEN 即可
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 生成当天中文日期并替换
+        id: update
+        run: |
+          # 生成不带前导零的中文日期（例如：2026年9月19日）
+          YEAR=$(date +%Y)
+          MONTH=$(date +%-m)
+          DAY=$(date +%-d)
+          NEW_DATE="${YEAR}年${MONTH}月${DAY}日"
+          
+          echo "当天日期: $NEW_DATE"
+          echo "new_date=$NEW_DATE" >> $GITHUB_OUTPUT
+
+          # 替换 README.md 中所有类似 “xxxx年x月x日” 的日期
+          # 兼容 2026年9月19日 和 2026年09月19日 等格式
+          sed -i -E "s/[0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日/${NEW_DATE}/g" README.md
+
+          # 检查是否有实际变化
+          if git diff --quiet README.md; then
+            echo "日期已是最新，无需更新"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "日期已更新为 $NEW_DATE"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 提交并推送更改
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git add README.md
+          git commit -m "chore: 更新报告日期为 ${{ steps.update.outputs.new_date }}"
+          git push
