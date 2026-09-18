@@ -77,15 +77,21 @@
 - **电信**：相对一般，部分节点延迟偏高或速度波动明显，建议优先选 Hysteria2 节点。
 - **延迟参考**（直连特性）：香港约20-40ms，日本70-90ms，新加坡60ms左右，美国180ms+。
 - **YouTube 体验**：非高峰期4K/8K可流畅，晚高峰会有波动，需切换节点。
+- 
+![](https://github.com/modporbme/liangxinyun/raw/main/liangxinyun/MiaoKo-%20.xyz-7910-analyze.png)
 
 ### 稳定性
 - 作为纯直连机场，没有中转入口的“单点风险”，但晚高峰拥堵、节点IP被墙或波动是常态。
 - 多数用户反馈“三周左右无大规模失效”，但个别节点掉速或断流（尤其 Hysteria2 长时间连接）存在。
 - 新机场（2025年开业），长期运营稳定性仍需观察。
 
+![](https://github.com/modporbme/liangxinyun/raw/main/liangxinyun/photo_2026-05-13_14-49-06.jpg)
+
 ### 流媒体与IP纯净度
 - Netflix / Disney+ 解锁率较高。
 - IP纯净度一般（AWS共享IP常见），部分用户反馈Google服务偶发验证码或风控，不适合对账号安全要求极高的场景。
+
+![](https://github.com/modporbme/liangxinyun/raw/main/liangxinyun/MiaoKo-%20.xyz-8008-test.png)
 
 ### 缺点总结
 - 晚高峰波动明显（直连天花板）。
